@@ -56,7 +56,7 @@ class ergm:
           A float.
         """
         n_nodes = int(np.sqrt(X.shape[1]))
-        return np.sum([self.weight(X[i].reshape((n_nodes, n_nodes))) for i in xrange(X.shape[0])])
+        return np.sum([self.weight(X[i].reshape((n_nodes, n_nodes))) for i in range(X.shape[0])])
 
     def fit(self, X, n_iterations=100, n_graph_samples=1000, alpha=0.01):
         """
@@ -76,13 +76,13 @@ class ergm:
         ps = [None]
         all_coefs = [self.coefs]
         
-        for i in xrange(n_iterations):
+        for i in range(n_iterations):
             self.coefs = [np.random.normal(x,alpha) for x in all_coefs[-1]]
             # sample graphs of the same size as the input
             graph_samples = self.sample(n_nodes, n_graph_samples)
             kappa = self.sum_weights(graph_samples)
             p = np.product([self.weight(X[j].reshape((n_nodes,n_nodes))) / kappa
-                            for j in xrange(n_input_graphs)])
+                            for j in range(n_input_graphs)])
             u = np.random.rand()
             if p > ps[-1] or u < (p / ps[-1]):
                 all_coefs.append(self.coefs)
@@ -103,7 +103,7 @@ class ergm:
         Sample n graphs from this ergm via Metropolis-Hastings MCMC.
 
         Args:
-          n: The number of samples to generate.
+          n_samples: The number of samples to generate.
 
         Returns:
           X: A n_samples x n_nodes^2 2d numpy array representing the sampled graphs.  Each
@@ -130,7 +130,7 @@ class ergm:
             ntries += 1
 
         if ntries == tolerance:
-            print 'did not converge'
+            print ('did not converge')
 
         return samples
         
